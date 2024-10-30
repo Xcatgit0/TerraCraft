@@ -224,6 +224,17 @@ buttonUp.addEventListener('click', function() {
     move(directionMove, player);
 
 });
+const desktopCtrl = (event) => {
+    const key = event.key;
+    if (key=="w") {
+        const direc = new THREE.Vector3();
+        camera.getWorldDirection(direc);
+        move(direc, player);
+    }
+};
+
+window.addEventListener('keydown',desktopCtrl);
+window.addEventListener('keyup',desktopCtrl);
 
 
 // เรียกใช้ฟังก์ชัน render
