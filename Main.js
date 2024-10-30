@@ -154,7 +154,7 @@ function onTouchEnd(event) {
     } else {
         //alert("shortTouch Detected!");
         isPlacingBlock = false;
-        if (touch.clientX > window.innerWidth / 4) {
+        if (touch.clientX > window.innerWidth / 6) {
         checkIntersection(touch);
         } else {
             let direction = new THREE.Vector3();
