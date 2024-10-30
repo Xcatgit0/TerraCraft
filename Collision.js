@@ -17,7 +17,7 @@ function checkCollision(x,y,z,scene) {
                 // ตรวจสอบว่ามีการทับซ้อนระหว่าง Bounding Box ของผู้เล่นและบล็อกด้านล่างหรือไม่
                 if (playerBox.intersectsBox(blockBox)) {
                     foundCollision = true;
-                    console.log("พบการชนกับบล็อกด้านล่าง:", object);
+      //              console.log("พบการชนกับบล็อกด้านล่าง:", object);
                 }
             }
         }
