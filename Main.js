@@ -1,10 +1,17 @@
 // Main.js
 
+window.onerror = function (message, source, lineno, colno, error) {
+    alert(`Error: ${message}\nSource: ${source}\nLine: ${lineno}, Column: ${colno}\nStack Trace: ${error ? error.stack : 'N/A'}`);
+    return true; // ป้องกันไม่ให้ข้อผิดพลาดถูกแสดงใน Console อีก
+};
+
+
+
 import { fpsAnimate, fpsCreate } from "./fpsCounter.js";
-import { create } from "./Player.js";
+import { create, Player, updateCam, updatePos , move, updateMove} from "./Player.js";
 // 1. สร้าง scene, camera, และ renderer
 const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 1000);
+const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 100);
 const renderer = new THREE.WebGLRenderer({antialias:true});
 const clock = new THREE.Clock();
 renderer.setSize(window.innerWidth, window.innerHeight);
@@ -132,6 +139,7 @@ const placeBlock = (blockName) => {
 
 let TouchTime;
 let ThreadholdTouch = 250;
+const player = new Player(0,3,5,"player",camera);
 
 function onTouchStart(event) {
     TouchTime = Date.now();
@@ -148,6 +156,10 @@ function onTouchEnd(event) {
         isPlacingBlock = false;
         if (touch.clientX > window.innerWidth / 4) {
         checkIntersection(touch);
+        } else {
+            let direction = new THREE.Vector3();
+            camera.getWorldDirection(direction);
+            move(direction, player)
         }
         //console.log("at "+touch.clientX+" "+touch.clientY);
     }
@@ -157,11 +169,15 @@ window.addEventListener('touchstart', onTouchStart);
 window.addEventListener('touchend', onTouchEnd,true);
 
 var framePerSecound = 0;
+
 // ฟังก์ชัน render
 const animate = () => {
     requestAnimationFrame(animate);
     //fpsAnimate(clock);
     framePerSecound = framePerSecound + 1;
+    updateMove(player, camera);
+    updatePos(player,scene);
+    updateCam(player,camera);
     renderer.render(scene, camera);
 };
 const showFPS = () => {
@@ -192,16 +208,26 @@ window.addEventListener('touchmove', (event) => {
     if (isMouseDown) {
         const deltaX = event.touches[0].clientX - prevMouseX;
         const deltaY = event.touches[0].clientY - prevMouseY;
-        rotateCamera(deltaX, deltaY);
+        rotateCamera(deltaX, 0);
+        camera.rotation.x -= deltaY /200;
         //camera.rotation.x += deltaX;
         //camera.rotation.y += deltaY;
         prevMouseX = event.touches[0].clientX;
         prevMouseY = event.touches[0].clientY;
     }
 });
+const buttonUp = create();
+// เตรียมการที่จะรัน
+buttonUp.addEventListener('click', function() {
+    const directionMove = new THREE.Vector3();
+    camera.getWorldDirection(directionMove);
+    move(directionMove, player);
+
+});
+
 
 // เรียกใช้ฟังก์ชัน render
 //fpsCreate();
-create();
+
 setInterval(showFPS, 1000);
 animate();

@@ -107,6 +107,8 @@ function createBlocks(scene) {
     // ตัวอย่างการสร้างบล็อก
     const block1 = new Block(0, 3, 0, 'grass'); // ใช้ texture ที่แตกต่างกัน
     block1.addToScene(scene);
+    const block4 = new Block(0,4,0, 'stone');
+    block4.addToScene(scene)
 
     const block2 = new Block(1, 3, 0, 'dirt'); // ใช้ texture ที่แตกต่างกัน
     block2.addToScene(scene);
