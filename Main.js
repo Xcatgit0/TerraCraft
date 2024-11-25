@@ -190,14 +190,14 @@ const showFPS = () => {
 
 // เรียกใช้งานฟังก์ชันตรวจสอบการชนเมื่อมีการคลิก
 window.addEventListener('mousedown', checkIntersection);
-window.addEventListener('mouseup', checkIntersection);
+//window.addEventListener('mouseup', checkIntersection);
 window.addEventListener('contextmenu', (event) => {
     //event.preventDefault(); // ป้องกันเมนูบริบท
 });
 
 // วางบล็อกโดยใช้คีย์บอร์ด
-window.addEventListener('keydown', (event) => {
-    if (event.key === 'b' && isPlacingBlock) {
+window.addEventListener('mousedown', (event) => {
+    if (isPlacingBlock) {
         console.log("placeing block");
         placeBlock('dirt'); // เปลี่ยนชื่อบล็อกที่ต้องการวางได้ตามต้องการ
     }
